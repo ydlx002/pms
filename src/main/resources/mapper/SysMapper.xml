@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.SysMapper" >
+
+  <resultMap id="SysMap" type="com.ydlx.domain.dto.SysDTO" >
+    <result column="sys_id" property="sysId" jdbcType="VARCHAR" />
+    <result column="sys_name" property="sysName" jdbcType="VARCHAR" />
+    <result column="sys_code" property="sysCode" jdbcType="VARCHAR" />
+    <result column="sys_desc" property="sysDesc" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    a.sys_id, a.sys_name, a.sys_code, a.sys_desc, a.enable, a.create_time, a.update_time,a.operator_id,b.full_name as operator
+  </sql>
+
+  <!--查询系统列表-->
+  <select id="getList" parameterType="com.ydlx.domain.dto.SysDTO" resultMap="SysMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_s_sys a left JOIN t_s_user b on a.operator_id = b.user_id
+    <where>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.sys_id = #{sysId}
+      </if>
+      <if test="sysCode != null and !&quot;&quot;.equals(sysCode.trim())">
+        AND a.sys_code = #{sysCode}
+      </if>
+      <if test="sysName != null and !&quot;&quot;.equals(sysName.trim())">
+        AND a.sys_name like CONCAT('%', #{sysName}, '%')
+      </if>
+      <if test="enable != null ">
+        AND a.enable = #{enable}
+      </if>
+    </where>
+  </select>
+
+  <!--分页获取用户信息-->
+  <select id="getListByPage" resultMap="SysMap" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_sys a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id = #{dto.sysId}
+      </if>
+      <if test="dto != null and dto.sysName != null and !&quot;&quot;.equals(dto.sysName.trim())">
+        AND a.sys_name like CONCAT('%', #{dto.sysName}, '%')
+      </if>
+      <if test="dto != null and dto.sysCode != null and !&quot;&quot;.equals(dto.sysCode.trim())">
+        AND a.sys_code  = #{dto.sysCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+    limit #{start}, #{pageSize}
+  </select>
+
+  <!--获取用户信息总数-->
+  <select id="getTotalCount"  resultType="INTEGER" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+    select COUNT(1)
+    from t_s_user a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id = #{dto.sysId}
+      </if>
+      <if test="dto != null and dto.sysName != null and !&quot;&quot;.equals(dto.sysName.trim())">
+        AND a.sys_name like CONCAT('%', #{dto.sysName}, '%')
+      </if>
+      <if test="dto != null and dto.sysCode != null and !&quot;&quot;.equals(dto.sysCode.trim())">
+        AND a.sys_code  = #{dto.sysCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+
+  <!-- 新增系统信息 -->
+  <insert id="insert" parameterType="com.ydlx.domain.dto.SysDTO" >
+    INSERT INTO t_s_sys
+    (sys_id, sys_code, sys_name, sys_desc, enable,create_time,update_time,operator_id)
+    value(
+      #{sysId, jdbcType=VARCHAR},
+      #{sysCode, jdbcType=VARCHAR},
+      #{sysName, jdbcType=VARCHAR},
+      #{sysDesc, jdbcType=VARCHAR},
+      #{enable, jdbcType=INTEGER},
+      #{createTime, jdbcType=TIMESTAMP},
+      #{updateTime, jdbcType=TIMESTAMP},
+      #{operatorId, jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!--  删除指定系统中的指定用户-->
+  <delete id="delete" parameterType="java.lang.String" >
+      delete t_s_sys  where sys_id = #{sysId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <!-- 更新系统信息 -->
+  <update id="update" parameterType="com.ydlx.domain.dto.SysDTO" >
+    update t_s_sys
+    <set >
+      <if test="sysCode != null" >
+        sys_code = #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sysName!= null" >
+        sys_name = #{sysName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDesc != null" >
+        sys_desc = #{sysDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sys_id = #{sysId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

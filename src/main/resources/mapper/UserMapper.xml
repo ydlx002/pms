@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.UserMapper" >
+
+  <resultMap id="UserMap" type="com.ydlx.domain.dto.UserDTO" >
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="login_account" property="loginAccount" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  
+  <sql id="User_Column_List" >
+      a.user_id, a.login_account,
+      a.full_name, a.nick_name, a.email, a.mobile, a.remark, a.operator_id, b.full_name as operator, a.create_time, a.update_time
+  </sql>
+
+  <!--获取用户信息列表-->
+  <select id="getList" resultMap="UserMap" parameterType="com.ydlx.domain.dto.UserDTO" >
+    select
+    <include refid="User_Column_List" />
+    from t_s_user a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="userId != null and !&quot;&quot;.equals(userId.trim())">
+        AND a.user_id = #{userId}
+      </if>
+      <if test="loginAccount != null and !&quot;&quot;.equals(loginAccount.trim())">
+        AND a.login_account = #{loginAccount}
+      </if>
+      <if test="fullName != null and !&quot;&quot;.equals(fullName.trim())">
+        AND a.full_name like CONCAT('%', #{fullName}, '%')
+      </if>
+      <if test="nickName != null and !&quot;&quot;.equals(nickName.trim())">
+        AND a.nick_name like CONCAT('%', #{nickName}, '%')
+      </if>
+      <if test="email != null and !&quot;&quot;.equals(email.trim())">
+        AND a.email  = #{email}
+      </if>
+      <if test="mobile != null and !&quot;&quot;.equals(mobile.trim())">
+        AND a.mobile = #{mobile}
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+  <!--分页获取用户信息-->
+  <select id="getListByPage" resultMap="UserMap" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+      select
+    <include refid="User_Column_List" />
+    from t_s_user a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.loginAccount != null and !&quot;&quot;.equals(dto.loginAccount.trim())">
+        AND a.login_account = #{dto.loginAccount}
+      </if>
+      <if test="dto != null and dto.fullName != null and !&quot;&quot;.equals(dto.fullName.trim())">
+        AND a.full_name like CONCAT('%', #{dto.fullName}, '%')
+      </if>
+      <if test="dto != null and dto.nickName != null and !&quot;&quot;.equals(dto.nickName.trim())">
+        AND a.nick_name like CONCAT('%', #{dto.nickName}, '%')
+      </if>
+      <if test="dto != null and dto.email != null and !&quot;&quot;.equals(dto.email.trim())">
+        AND a.email  = #{dto.email}
+      </if>
+      <if test="dto != null and dto.mobile != null and !&quot;&quot;.equals(dto.mobile.trim())">
+        AND a.mobile = #{dto.mobile}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.user_id in (select user_id from t_s_sys_user where sys_id = #{sysId})
+      </if>
+    </where>
+    order by a.create_time DESC
+    limit #{start}, #{pageSize}
+  </select>
+
+  <!--获取用户信息总数-->
+  <select id="getTotalCount"  resultType="INTEGER" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+    select COUNT(1)
+    from t_s_user a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.loginAccount != null and !&quot;&quot;.equals(dto.loginAccount.trim())">
+        AND a.login_account = #{dto.loginAccount}
+      </if>
+      <if test="dto != null and dto.fullName != null and !&quot;&quot;.equals(dto.fullName.trim())">
+        AND a.full_name like CONCAT('%', #{dto.fullName}, '%')
+      </if>
+      <if test="dto != null and dto.nickName != null  and !&quot;&quot;.equals(dto.nickName.trim())">
+        AND a.nick_name like CONCAT('%', #{dto.nickName}, '%')
+      </if>
+      <if test="dto != null and dto.email != null and !&quot;&quot;.equals(dto.email.trim())">
+        AND a.email  = #{dto.email}
+      </if>
+      <if test="dto != null and dto.mobile != null and !&quot;&quot;.equals(dto.mobile.trim())">
+        AND a.mobile = #{dto.mobile}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.user_id in (select user_id from t_s_sys_user where sys_id = #{sysId})
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+  <!-- 新增用户信息 -->
+  <insert id="insertUser" parameterType="com.ydlx.domain.dto.UserDTO" >
+    INSERT INTO t_s_user
+    (user_id, login_account, full_name, nick_name, email, mobile, remark, create_time, update_time, operator_id)
+    value(
+      #{userId, jdbcType=VARCHAR},
+      #{loginAccount, jdbcType=VARCHAR},
+      #{fullName, jdbcType=VARCHAR},
+      #{nickName, jdbcType=VARCHAR},
+      #{email, jdbcType=VARCHAR},
+      #{mobile, jdbcType=VARCHAR},
+      #{remark, jdbcType=VARCHAR},
+      #{createTime, jdbcType=TIMESTAMP},
+      #{updateTime, jdbcType=TIMESTAMP},
+      #{operatorId, jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- 更新用户信息 -->
+  <update id="updateUser" parameterType="com.ydlx.domain.dto.UserDTO" >
+    update t_s_user
+    <set >
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="email!= null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <!---删除用户信息-->
+  <delete id="deleteUser" parameterType="java.lang.String">
+      delete from t_s_user where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

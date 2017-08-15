@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.PrivilegeMapper" >
+
+  <resultMap id="PrivilegeMap" type="com.ydlx.domain.dto.PrivilegeDTO" >
+    <result column="pri_id" property="priId" jdbcType="VARCHAR" />
+    <result column="sys_id" property="sysId" jdbcType="VARCHAR" />
+    <result column="pri_code" property="priCode" jdbcType="VARCHAR" />
+    <result column="pri_name" property="priName" jdbcType="VARCHAR" />
+    <result column="pri_desc" property="priDesc" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  
+  <sql id="Base_Column_List" >
+      a.pri_id, a.sys_id,
+      a.pri_code, a.pri_name, a.pri_desc, a.operator_id, b.full_name as operator, a.create_time, a.update_time
+  </sql>
+
+  <!--获取权限信息列表-->
+  <select id="getList" resultMap="PrivilegeMap" parameterType="com.ydlx.domain.dto.PrivilegeDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_privilege a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="priId != null and !&quot;&quot;.equals(priId.trim())">
+        AND a.pri_id = #{priId}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.sys_id IN ('1',#{sysId})
+      </if>
+      <if test="priName != null and !&quot;&quot;.equals(priName.trim())">
+        AND a.pri_name like CONCAT('%', #{priName}, '%')
+      </if>
+      <if test="priCode != null and !&quot;&quot;.equals(priCode.trim())">
+        AND a.pri_code  = #{priCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+  <!--分页获取权限信息-->
+  <select id="getListByPage" resultMap="PrivilegeMap" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+      select
+    <include refid="Base_Column_List" />
+    from t_s_privilege a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.priId != null and !&quot;&quot;.equals(dto.priId.trim())">
+        AND a.pri_id = #{dto.priId}
+      </if>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id in ('1',#{dto.sysId})
+      </if>
+      <if test="dto != null and dto.priName != null and !&quot;&quot;.equals(dto.priName.trim())">
+        AND a.pri_name like CONCAT('%', #{dto.priName}, '%')
+      </if>
+      <if test="dto != null and dto.priCode != null and !&quot;&quot;.equals(dto.priCode.trim())">
+        AND a.pri_code  = #{dto.priCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+    limit #{start}, #{pageSize}
+  </select>
+
+  <!--获取权限总数-->
+  <select id="getTotalCount"  resultType="INTEGER" parameterType="com.ydlx.domain.dto.CondictionDTO" >
+    select COUNT(1)
+    from t_s_privilege a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.priId != null and !&quot;&quot;.equals(dto.priId.trim())">
+        AND a.pri_id = #{dto.priId}
+      </if>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id in ('1',#{dto.sysId})
+      </if>
+      <if test="dto != null and dto.priName != null and !&quot;&quot;.equals(dto.priName.trim())">
+        AND a.pri_name like CONCAT('%', #{dto.priName}, '%')
+      </if>
+      <if test="dto != null and dto.priCode != null and !&quot;&quot;.equals(dto.priCode.trim())">
+        AND a.pri_code  = #{dto.priCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+  <!-- 新增权限信息 -->
+  <insert id="insert" parameterType="com.ydlx.domain.dto.PrivilegeDTO" >
+    INSERT INTO t_s_privilege
+    (sys_id, pri_id, pri_code, pri_name, pri_desc, create_time, update_time, operator_id)
+    value(
+      #{sysId, jdbcType=VARCHAR},
+      #{priId, jdbcType=VARCHAR},
+      #{priCode, jdbcType=VARCHAR},
+      #{priName, jdbcType=VARCHAR},
+      #{priDesc, jdbcType=VARCHAR},
+      #{createTime, jdbcType=TIMESTAMP},
+      #{updateTime, jdbcType=TIMESTAMP},
+      #{operatorId, jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- 更新权限信息 -->
+  <update id="update" parameterType="com.ydlx.domain.dto.UserDTO" >
+    update t_s_privilege
+    <set >
+      <if test="priName != null" >
+        pri_name = #{priName,jdbcType=VARCHAR},
+      </if>
+      <if test="priDesc!= null" >
+        pri_desc = #{priDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pri_id = #{priId,jdbcType=VARCHAR}
+  </update>
+
+  <!---删除权限信息-->
+  <delete id="delete" parameterType="java.lang.String">
+      delete from t_s_privilege where pri_id = #{priId,jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.SysUserMapper" >
+
+  <resultMap id="SysUserMap" type="com.ydlx.domain.dto.SysUserDTO" >
+    <result column="sys_id" property="sysId" jdbcType="VARCHAR" />
+    <result column="sys_name" property="sysName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_type_id" property="userTypeId" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    a.user_id, b.sys_name, a.user_id, a.user_type_id, a.enable, a.create_time, a.update_time,a.operator_id,a.operator
+  </sql>
+
+  <!--查询用户关系列表-->
+  <select id="getList" parameterType="com.ydlx.domain.dto.SysUserDTO" resultMap="SysUserMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_s_sys_user a left JOIN t_s_sys b on a.sys_id = b.sys_id
+    <where>
+      <if test="userId != null and !&quot;&quot;.equals(userId.trim())">
+        AND a.user_id = #{userId}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.sys_id = #{sysId}
+      </if>
+      <if test="sysName != null !&quot;&quot;.equals(sysName.trim())">
+        AND b.sys_name like CONCAT('%', #{sysName}, '%')
+      </if>
+      <if test="enable != null ">
+        AND a.enable = #{enable}
+      </if>
+      <if test="user_type_id != null !&quot;&quot;.equals(user_type_id.trim())">
+        AND a.user_type_id  = #{userTypeId}
+      </if>
+    </where>
+  </select>
+
+
+  <!-- 新增用户信息 -->
+  <insert id="insertSysUser" parameterType="com.ydlx.domain.dto.SysUserDTO" >
+    INSERT INTO t_s_sys_user
+    (sys_id, user_id, user_type_id, password, enable,create_time,update_time,operator_id)
+    value(
+      #{sysId, jdbcType=VARCHAR},
+      #{userId, jdbcType=VARCHAR},
+      #{userTypeId, jdbcType=VARCHAR},
+      #{password, jdbcType=VARCHAR},
+      #{enable, jdbcType=INTEGER},
+      #{createTime, jdbcType=TIMESTAMP},
+      #{updateTime, jdbcType=TIMESTAMP},
+      #{operatorId, jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!--  删除指定系统中的指定用户-->
+  <delete id="delete" parameterType="java.lang.String" >
+      delete from t_s_sys_user
+      <where>
+        <if test="userId != null ">
+          AND user_id = #{userId}
+        </if>
+          AND sys_id  = #{sysId}
+      </where>
+  </delete>
+  
+</mapper>
