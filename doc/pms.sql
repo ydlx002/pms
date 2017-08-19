@@ -20,8 +20,8 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_s_menu`;
 CREATE TABLE `t_s_menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单id',
-  `parentid` int(11) DEFAULT NULL COMMENT '父级菜单ID',
+  `id` varchar(64) NOT NULL COMMENT '菜单id',
+  `parent_id` varchar(64) DEFAULT NULL COMMENT '父级菜单ID',
   `sys_id` varchar(64) DEFAULT NULL COMMENT '系统ID',
   `name` varchar(255) DEFAULT NULL COMMENT '菜单名',
   `leaf` int(11) DEFAULT NULL COMMENT '0 非叶子节点  1叶子节点',
@@ -30,6 +30,9 @@ CREATE TABLE `t_s_menu` (
   `level` int(11) DEFAULT NULL COMMENT '菜单级数',
   `url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
   `target` varchar(255) DEFAULT NULL COMMENT '跳转方式',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `operator_id` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
