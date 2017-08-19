@@ -24,8 +24,9 @@ public class SysDTO extends BaseDTO{
         return sysId;
     }
 
-    public void setSysId(String sysId) {
+    public SysDTO setSysId(String sysId) {
         this.sysId = sysId;
+        return this;
     }
 
     public String getSysCode() {

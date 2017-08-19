@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.ydlx.domain.dto.MenuDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="leaf" property="leaf" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+      a.id, a.parent_id, a.sys_id, a.name, a.leaf, a.icon, a.path, a.level, a.url, a.target, a.operator_id, b.full_name as operator, a.create_time, a.update_time
+  </sql>
+
+
+  <!--根据菜单ID获取菜单-->
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_menu a LEFT JOIN t_s_user b on a.operator_id= b.user_id
+    <where>
+      a.id=#{id}
+    </where>
+  </select>
+
+
+  <!--获取菜单列表-->
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.ydlx.domain.dto.MenuDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_menu a LEFT JOIN t_s_user b on a.operator_id=b.user_id
+    <where>
+      <if test="parentId != null and !&quot;&quot;.equals(parentId.trim())" >
+        a.parent_id = #{parentId}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())" >
+        a.sys_id = #{sysId}
+      </if>
+    </where>
+    order by a.id ASC
+  </select>
+
+
+  <!--获取菜单列表-->
+  <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+          <include refid="Base_Column_List" />
+        from t_s_menu a LEFT JOIN t_s_user b on a.operator_id=b.user_id
+    <where>
+      <if test="ids != null and ids.size() &gt; 0  " >
+        a.id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())" >
+        a.sysId = #{sysId}
+      </if>
+    </where>
+        order by a.id ASC
+  </select>
+
+  <!--根据角色ID获取菜单列表-->
+  <select id="getListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    b.id, b.parentid, b.name, b.leaf, b.icon, b.path, b.level, b.url, b.target, b.operator, b.createtime, b.modifytime
+    from t_s_role_menu a LEFT JOIN t_s_menu b on a.menuid = b.id
+    <where>
+      <if test="list.size() &gt; 0  " >
+        a.roleid in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    order by a.id ASC
+  </select>
+
+<!--新增菜单-->
+  <insert id="insert" parameterType="com.ydlx.domain.dto.MenuDTO" >
+    insert into t_s_menu
+      (id,parent_id, sys_id,name, leaf, icon, path, level, url, target, create_time, update_time, operator_id)
+    VALUES
+      (
+        #{id, jdbcType=VARCHAR},
+        #{parentId, jdbcType=INTEGER},
+        #{sysId, jdbcType=VARCHAR},
+        #{name, jdbcType=VARCHAR},
+        #{leaf, jdbcType=INTEGER},
+        #{icon, jdbcType=VARCHAR},
+        #{path, jdbcType=VARCHAR},
+        #{level, jdbcType=INTEGER},
+        #{url, jdbcType=VARCHAR},
+        #{target, jdbcType=VARCHAR},
+        #{createTime, jdbcType=TIMESTAMP},
+        #{updateTime, jdbcType=TIMESTAMP},
+        #{operatorId, jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--更新菜单-->
+  <update id="update" parameterType="com.ydlx.domain.dto.MenuDTO" >
+    update t_s_menu
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysId != null" >
+        sys_id = #{sysId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="leaf!= null" >
+        leaf = #{leaf,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null" >
+        icon = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null" >
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <!---删除菜单-->
+  <delete id="delete" parameterType="String">
+    delete from t_s_menu where id = #{id,jdbcType=VARCHAR}
+  </delete>
+</mapper>

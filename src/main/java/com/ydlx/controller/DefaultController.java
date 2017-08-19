@@ -35,7 +35,7 @@ public class DefaultController {
 
     @GetMapping(value="/user/index")
     public ModelAndView userIndex(){
-        ModelAndView mav = new ModelAndView("/user/index");
+        ModelAndView mav = new ModelAndView("/user");
         mav.addObject("sysId","1");
         mav.addObject("sysName","权限管理系统(PMS)");
         return mav;
@@ -43,7 +43,7 @@ public class DefaultController {
 
     @GetMapping(value="/sys/index")
     public ModelAndView sysIndex(){
-        ModelAndView mav = new ModelAndView("/sys/index");
+        ModelAndView mav = new ModelAndView("/sys");
         mav.addObject("sysId","1");
         mav.addObject("sysName","权限管理系统(PMS)");
         return mav;
@@ -51,7 +51,7 @@ public class DefaultController {
 
     @GetMapping(value="/pri/index")
     public ModelAndView priIndex(){
-        ModelAndView mav = new ModelAndView("/pri/index");
+        ModelAndView mav = new ModelAndView("/pri");
         mav.addObject("sysId","1");
         mav.addObject("sysName","权限管理系统(PMS)");
         return mav;

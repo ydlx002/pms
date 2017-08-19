@@ -5,20 +5,23 @@ package com.ydlx.constants;
  * 2000  用户管理错误
  * 3000  角色管理错误
  * 4000  权限管理错误
- * 5000
+ * 5000  菜单管理
  * 9000  参数错误
  * Create by ydlx on 2017/5/3.
  */
 public enum ResultType {
     FAIL("9999", "操作失败"),
     SUCCESS("0000", "操作成功"),
+    EMPTYSYS("1003", "系统不存在"),
     SESSIONTIMEOUT("1001","会话超时"),
-    EMPTYPARENTID("1002","父节点菜单ID为空"),
+    EMPTYPARENTID("1002","父节点菜单ID不存在"),
     EFFECTIVEACCOUNT("2001","当前用户当前应用于其他系统，不允许删除"),
     ACCOUNTEXISTS("9001","账号已存在"),
     MOBILEXISTS("9002","手机号已存在"),
     EMAILEXISTS("9003","邮箱已存在"),
-
+    EMPTYMENUID("5001","菜单ID为空"),
+    EMPTYMENU("5002","菜单项不存在"),
+    EMPTYPARENTMENU("5003","父级菜单项不存在")
     ;
 
     private String returnCode;
