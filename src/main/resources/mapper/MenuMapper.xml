@@ -19,7 +19,7 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-      a.id, a.parent_id, a.sys_id, a.name, a.leaf, a.icon, a.path, a.level, a.url, a.target, a.order_by
+      a.id, a.parent_id, a.sys_id, a.name, a.leaf, a.icon, a.path, a.level, a.url, a.target, a.order_by,
       a.operator_id, b.full_name as operator, a.create_time, a.update_time
   </sql>
 
@@ -65,7 +65,7 @@
         </foreach>
       </if>
       <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())" >
-        a.sysId = #{sysId}
+        a.sys_id = #{sysId}
       </if>
     </where>
         order by a.id ASC

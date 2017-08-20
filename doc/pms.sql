@@ -30,11 +30,28 @@ CREATE TABLE `t_s_menu` (
   `level` int(11) DEFAULT NULL COMMENT '菜单级数',
   `url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
   `target` varchar(255) DEFAULT NULL COMMENT '跳转方式',
+  `order_by` int(11) DEFAULT 0 COMMENT '排序',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `operator_id` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `t_s_menu` VALUES ('1', '-1', '1','菜单根目录', '0', null, '--', '0', '#', 0,null, '2012-12-15 18:08:07', '2012-12-23 19:46:45', '1');
+INSERT INTO `t_s_menu` VALUES ('2', '1', '1','系统管理', '0', null, '1#2', '1', '#', 0,null, '2012-12-13 13:46:00', '2013-04-29 10:36:34', '1');
+INSERT INTO `t_s_menu` VALUES ('3', '1', '1','业务管理', '0', null, '1#3', '1', '#', 0,null, '2012-12-13 13:53:10', '2013-04-26 20:15:27', '1');
+INSERT INTO `t_s_menu` VALUES ('4', '2', '1','菜单管理', '0', null, '1#2#4', '2', '/system/menu/index', 0,null, '2012-12-13 16:00:02', '2013-04-26 20:15:36', '1');
+INSERT INTO `t_s_menu` VALUES ('5', '2', '1','用户管理', '0', null, '1#2#5', '2', '/system/user/index', 0,null, '2012-12-13 16:00:02', '2013-04-26 20:15:47', '1');
+INSERT INTO `t_s_menu` VALUES ('6', '2', '1','角色管理', '0', null, '1#2#6', '2', '/system/role/index', 0,null, '2012-12-13 16:00:02', '2013-04-26 20:15:50', '1');
+INSERT INTO `t_s_menu` VALUES ('7', '4', '1','菜单添加', '1', null, '1#2#4#7', '3', '/system/menuAdd.jsp', 0,'centerFrame', '2012-12-15 18:33:28', '2013-04-26 20:16:31', '1');
+INSERT INTO `t_s_menu` VALUES ('8', '2', '1','权限管理', '0', null, '1#2#8', '2', '/system/permission/index',0, null, '2012-12-16 13:59:33', '2013-04-29 11:26:42', '1');
+INSERT INTO `t_s_menu` VALUES ('9', '4', '1','菜单查询', '1', null, '1#2#4#9', '3', '/system/menuList.jsp', 0,'centerFrame', '2012-12-16 14:15:20', '2013-04-26 20:12:33', '1');
+INSERT INTO `t_s_menu` VALUES ('10', '8', '1','权限添加', '1', null, '1#2#8#10', '3', '/system/permissionAdd.jsp', 0,'centerFrame', '2012-12-20 14:58:29', '2013-04-26 20:12:38', '1');
+INSERT INTO `t_s_menu` VALUES ('13', '8', '1','权限查询', '1', null, '1#2#8#13', '3', '/system/permissionList.jsp', 0,'centerFrame', '2012-12-20 16:28:03', '2013-04-26 20:12:43', '1');
+INSERT INTO `t_s_menu` VALUES ('14', '6', '1','角色添加', '1', null, '1#2#6#14', '3', '/system/roleAdd.jsp', 0,'centerFrame', '2012-12-22 12:36:14', '2013-04-26 20:12:48', '1');
+INSERT INTO `t_s_menu` VALUES ('15', '6', '1','角色查询', '1', null, '1#2#6#15', '3', '/system/roleList.jsp', 0,'centerFrame', '2012-12-22 14:29:28', '2013-04-26 20:12:53', '1');
+INSERT INTO `t_s_menu` VALUES ('16', '5', '1','用户添加', '1', null, '1#2#5#16', '3', '/system/userAdd.jsp', 0,'centerFrame', '2012-12-22 18:34:26', '2013-04-26 20:12:57', '1');
+INSERT INTO `t_s_menu` VALUES ('17', '5', '1','用户查询', '1', null, '1#2#5#17', '3', '/system/userList.jsp', 0,'centerFrame', '2012-12-22 19:56:13', '2013-04-26 20:13:01', '1');
 
 -- ----------------------------
 -- Table structure for t_s_privilege

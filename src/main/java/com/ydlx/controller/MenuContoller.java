@@ -21,6 +21,16 @@ public class MenuContoller {
     @Autowired
     private MenuService menuService;
 
+    /**
+     * 新增菜单项
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/getMenuTree")
+    public ResultVO getMenuTree(@PathVariable("sysId")String sysId){
+        MenuDTO dto = new MenuDTO();
+        return menuService.getMenuTree(sysId);
+    }
 
     /**
      * 新增菜单项

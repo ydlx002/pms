@@ -30,7 +30,7 @@ public class TreeUtil {
             Set<Map.Entry<String, MenuVO>> entrySet = dataMap.entrySet();
             for (Map.Entry<String, MenuVO> entry : entrySet) {
                 MenuVO menu = entry.getValue();
-                if (null == menu.getParentId() || "".equals(menu.getParentId())) {
+                if (null == menu.getParentId() || "-1".equals(menu.getParentId())) {
                     root.getChildrenMenu().add(menu);
                 } else {
                     dataMap.get(menu.getParentId()).getChildrenMenu().add(menu);
