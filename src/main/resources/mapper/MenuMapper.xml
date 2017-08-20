@@ -11,6 +11,7 @@
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="order_by" property="orderBy" jdbcType="INTEGER" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -18,7 +19,8 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-      a.id, a.parent_id, a.sys_id, a.name, a.leaf, a.icon, a.path, a.level, a.url, a.target, a.operator_id, b.full_name as operator, a.create_time, a.update_time
+      a.id, a.parent_id, a.sys_id, a.name, a.leaf, a.icon, a.path, a.level, a.url, a.target, a.order_by
+      a.operator_id, b.full_name as operator, a.create_time, a.update_time
   </sql>
 
 
@@ -88,7 +90,7 @@
 <!--新增菜单-->
   <insert id="insert" parameterType="com.ydlx.domain.dto.MenuDTO" >
     insert into t_s_menu
-      (id,parent_id, sys_id,name, leaf, icon, path, level, url, target, create_time, update_time, operator_id)
+      (id,parent_id, sys_id,name, leaf, icon, path, level, url, target, order_by, create_time, update_time, operator_id)
     VALUES
       (
         #{id, jdbcType=VARCHAR},
@@ -101,6 +103,7 @@
         #{level, jdbcType=INTEGER},
         #{url, jdbcType=VARCHAR},
         #{target, jdbcType=VARCHAR},
+        #{order_by, jdbcType=INTEGER},
         #{createTime, jdbcType=TIMESTAMP},
         #{updateTime, jdbcType=TIMESTAMP},
         #{operatorId, jdbcType=VARCHAR}
@@ -134,6 +137,9 @@
       </if>
       <if test="target != null" >
         target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBy != null and 0 != orderBy" >
+        order_by = #{orderBy,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},

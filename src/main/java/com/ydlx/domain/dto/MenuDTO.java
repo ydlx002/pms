@@ -29,6 +29,9 @@ public class MenuDTO extends BaseDTO{
     /**菜单级数*/
     private int level;
 
+    /**排序*/
+    private int orderBy;
+
     /**url*/
     private String url;
 
@@ -117,5 +120,13 @@ public class MenuDTO extends BaseDTO{
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public int getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(int orderBy) {
+        this.orderBy = orderBy;
     }
 }

@@ -8,6 +8,14 @@ import com.ydlx.domain.vo.ResultVO;
  */
 public interface MenuService {
 
+
+    /**
+     * 获取菜单树
+     * @return
+     */
+    ResultVO getMenuTree(String sysId);
+
+
     /**
      * 新增菜单项
      * @param dto

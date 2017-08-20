@@ -5,15 +5,20 @@ import com.ydlx.dao.MenuMapper;
 import com.ydlx.dao.SysMapper;
 import com.ydlx.domain.dto.MenuDTO;
 import com.ydlx.domain.dto.SysDTO;
+import com.ydlx.domain.vo.MenuVO;
 import com.ydlx.domain.vo.ResultVO;
 import com.ydlx.service.MenuService;
+import com.ydlx.utils.TreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,6 +33,20 @@ public class MenuServiceImpl implements MenuService{
 
     @Resource
     private SysMapper sysMapper;
+
+    @Override
+    public ResultVO getMenuTree(String sysId) {
+        ResultVO resultVO = new ResultVO(ResultType.SUCCESS);
+        List<MenuDTO> menuDTOs = menuMapper.getListByIds(sysId,null);
+        List<MenuVO> menuVOs = new ArrayList<MenuVO>();
+        for(MenuDTO dto : menuDTOs){
+            MenuVO menuVO = new MenuVO();
+            BeanUtils.copyProperties(dto, menuVO);
+            menuVOs.add(menuVO);
+        }
+        resultVO.setData(TreeUtil.createTreeMenus(menuVOs));
+        return resultVO;
+    }
 
     /**
      * 新增菜单信息
