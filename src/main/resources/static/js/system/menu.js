@@ -2,14 +2,21 @@
  * Created by ydlx on 2017/6/4.
  */
 $(document).ready(function(){
+    var sysId=$("#sysId").val();
+    var menuAddFlag=0;//新增菜单
+    var menuEditFlag=0;//编辑菜单
     $.ajax({
         type: 'POST',
-        url: $path_base + 'menu/getMenu',
+        url: $path_base + 'menu/'+sysId+'/getMenuTree',
         success: function (data) {
-            $('#nestable2').append(createMenu(new Array(),data).join('')).nestable();
+            if('0000'==data.resultCode){
+                $('#nestable2').append(createMenu(new Array(),data.data).join('')).nestable();
+            }else{
+                swal({title:"人品不好",text: data.resultDesc,type:"error"});
+            }
         },
         error: function () {
-            console.log("错误");
+            swal({title:"人品不好",text: "系统错误",type:"error"});
         }
     });
 
@@ -28,14 +35,38 @@ $(document).ready(function(){
             obj.push("<ol class=\"dd-list\">");
             obj.push("<li class=\"dd-item\" data-id=\"" + menuList[i].id + "\">");
             obj.push("<div class=\"dd-handle\">");
-            obj.push("<span class=\"pull-right\"> <a href=\"#\"><i class=\"fa fa-edit\"></i></a><a href=\"#\"><i class=\"fa fa-trash\"></i></a></span>");
+            obj.push("<span class=\"pull-right\"><i class=\"fa fa-edit\" style='margin-right:10px'></i><i class=\"fa fa-trash\"></i></span>");
             obj.push("<span class=\"label label-info\"><i class=\""+menuList[i].icon+"\"></i></span>" + menuList[i].name + "</div>");
             if (menuList[i].leaf == 0) {
-                createMenu(obj, menuList[i].childMenuList);
+                createMenu(obj, menuList[i].childrenMenu);
             }
             obj.push("</div></li></ol>");
         }
         return obj;
     };
+
+    $(".select_box").click(function(event){
+        event.stopPropagation();
+        $(this).find(".option").toggle();
+        $(this).parent().siblings().find(".option").hide();
+    });
+    /*赋值给文本框*/
+    $(".option a").click(function(){
+        $(".select_txt").empty();
+        $(this).parent().siblings(".select_txt").append($(this).clone(true));
+    });
+
+    $(document).click(function(event){
+        var eo=$(event.target);
+        if($(".select_box").is(":visible")&&eo.attr("class")!="option"&&!eo.parent(".option").length){
+            $('.option').hide();
+        }
+        //新增菜单标识
+        if(menuAddFlag==1&&eo.parent(".dd-item").length){
+            $('#parentMenu').val(eo.text());
+            $('#parentMenuId').val(eo.parent().attr('data-id'));
+        }
+
+    });
 
 });

@@ -57,4 +57,12 @@ public class DefaultController {
         return mav;
     }
 
+    @GetMapping(value="/menu/index")
+    public ModelAndView menuIndex(){
+        ModelAndView mav = new ModelAndView("/menu");
+        mav.addObject("sysId","1");
+        mav.addObject("sysName","权限管理系统(PMS)");
+        return mav;
+    }
+
 }
