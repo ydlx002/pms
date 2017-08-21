@@ -1,4 +1,4 @@
-package com.ydlx.domain.vo.request;
+package com.ydlx.domain.vo.request.user;
 
 import java.io.Serializable;
 
