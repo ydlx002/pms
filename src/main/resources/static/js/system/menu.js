@@ -1,6 +1,7 @@
 /**
  * Created by ydlx on 2017/6/4.
  */
+var addMenu;
 $(document).ready(function(){
     var sysId=$("#sysId").val();
     var menuAddFlag=0;//新增菜单
@@ -32,11 +33,13 @@ $(document).ready(function(){
 
     var createMenu = function(obj, menuList){
         for(var i=0,size=menuList.length;i<size;i++) {
+            var id=menuList[i].id;
+            var name=menuList[i].name;
             obj.push("<ol class=\"dd-list\">");
             obj.push("<li class=\"dd-item\" data-id=\"" + menuList[i].id + "\">");
             obj.push("<div class=\"dd-handle\">");
             obj.push("<span class=\"pull-right\">");
-            obj.push("<button type='button' data-toggle='modal'  class='btn btn-white btn-sm' onclick='addMenu("+menuList[i].id+","+menuList[i].name+")'>新增子菜单</button>");
+            obj.push("<button type='button' data-toggle='modal'  class='btn btn-white btn-sm' onclick='addMenu(\""+id+"\",\""+name+"\")';>新增子菜单</button>");
             obj.push("<button type='button' data-toggle='modal'  class='btn btn-white btn-sm'>编辑菜单</button>");
             obj.push("<button type='button' data-toggle='modal'  class='btn btn-white btn-sm'>权限设置</button>");
             obj.push("<button type='button' data-toggle='modal'  class='btn btn-white btn-sm'>删除菜单</button>");
@@ -73,8 +76,11 @@ $(document).ready(function(){
         }
     });
 
-});
+    /**新增子菜单弹出框*/
+    addMenu= function (id,name) {
+        $("#addParentMenu").val(name);
+        $("#addParentMenuId").val(id);
+        $("#addModal").modal('show');
+    }
 
-function  addMenu(id,name) {
-    $("#addModal").modal('show');
-}
+});
