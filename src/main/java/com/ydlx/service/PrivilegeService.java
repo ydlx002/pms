@@ -24,8 +24,14 @@ public interface PrivilegeService {
 
 
     /**
-     * 新增用户
-     * @param dto 用户信息
+     * 获取权限列表
+     * @return
+     */
+    ResultVO getPrivilegeList(PrivilegeDTO dto);
+
+    /**
+     * 新增权限
+     * @param dto 权限信息
      * @return
      */
     ResultVO addPrivilege(PrivilegeDTO dto);

@@ -6,9 +6,6 @@ package com.ydlx.domain.dto;
  */
 public class UserDTO extends BaseDTO{
 
-    /**系统ID*/
-    private String sysId;
-
     /**用户ID*/
     private String userId;
 
@@ -32,15 +29,6 @@ public class UserDTO extends BaseDTO{
 
     /**状态*/
     private Integer state;
-
-
-    public String getSysId() {
-        return sysId;
-    }
-
-    public void setSysId(String sysId) {
-        this.sysId = sysId;
-    }
 
     public String getUserId() {
         return userId;
@@ -112,7 +100,6 @@ public class UserDTO extends BaseDTO{
     @Override
     public String toString() {
         return "UserDTO{" +
-                "sysId='" + sysId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", loginAccount='" + loginAccount + '\'' +
                 ", fullName='" + fullName + '\'' +

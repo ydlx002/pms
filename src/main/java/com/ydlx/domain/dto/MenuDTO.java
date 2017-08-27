@@ -11,9 +11,6 @@ public class MenuDTO extends BaseDTO{
     /**父级菜单ID*/
     private String parentId;
 
-    /**系统ID*/
-    private String sysId;
-
     /**菜单名称*/
     private String name;
 
@@ -56,13 +53,6 @@ public class MenuDTO extends BaseDTO{
         return this;
     }
 
-    public String getSysId() {
-        return sysId;
-    }
-
-    public void setSysId(String sysId) {
-        this.sysId = sysId;
-    }
 
     public String getName() {
         return name;

@@ -47,6 +47,20 @@ public class PrivilegeServiceImpl implements PrivilegeService{
     }
 
     @Override
+    public ResultVO getPrivilegeList(PrivilegeDTO dto) {
+        List<PrivilegeDTO> privilegeDTOs = privilegeMapper.getList(dto);
+        List<PrivilegeVO> privilegeVOs = new ArrayList<PrivilegeVO>();
+        for(PrivilegeDTO privilegeDTO : privilegeDTOs){
+            PrivilegeVO privilegeVO = new PrivilegeVO();
+            BeanUtils.copyProperties(privilegeDTO, privilegeVO);
+            privilegeVOs.add(privilegeVO);
+        }
+        ResultVO resultVO = new ResultVO(ResultType.SUCCESS);
+        resultVO.setData(privilegeVOs);
+        return resultVO;
+    }
+
+    @Override
     public ResultVO addPrivilege(PrivilegeDTO dto) {
         dto.setPriId(UUID.randomUUID().toString().replace("-","").trim());
         if(privilegeMapper.insert(dto)){

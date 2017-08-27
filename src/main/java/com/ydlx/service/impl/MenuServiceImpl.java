@@ -56,7 +56,7 @@ public class MenuServiceImpl implements MenuService{
     @Override
     @Transactional
     public ResultVO addMenu(MenuDTO dto) {
-        if(sysMapper.getList(new SysDTO().setSysId(dto.getSysId())).size() ==0 ){
+        if(sysMapper.getList(new SysDTO(dto.getSysId())).size() ==0 ){
             return new ResultVO(ResultType.EMPTYSYS);
         }
         if(!StringUtils.isEmpty(dto.getParentId())){

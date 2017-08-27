@@ -80,6 +80,25 @@ $(document).ready(function(){
     addMenu= function (id,name) {
         $("#addParentMenu").val(name);
         $("#addParentMenuId").val(id);
+        //加载权限下拉框
+        $.ajax({
+            type: 'POST',
+            url: $path_base + 'pri/'+sysId+'/getPriDict',
+            success: function (data) {
+                $('#addPriId').empty();
+                if('0000'==data.resultCode){
+                    $.each(data.data, function (k,v) {
+                        $('#addPriId').append("<option value='"+v.priId+"'>"+v.priName+"</option>");
+                    });
+                }else{
+                    swal({title:"人品不好",text: data.resultDesc,type:"error"});
+                }
+            },
+            error: function () {
+                swal({title:"人品不好",text: "系统错误",type:"error"});
+            }
+        });
+
         $("#addModal").modal('show');
     }
 

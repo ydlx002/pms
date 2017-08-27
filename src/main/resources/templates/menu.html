@@ -11,6 +11,7 @@
     <link th:href="@{/hplus/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet"/>
     <link th:href="@{/hplus/css/animate.min.css}" rel="stylesheet"/>
     <link th:href="@{/hplus/css/style.min862f.css?v=4.1.0}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
 
     <style>
         .select_box{float:left;border:solid 1px #EDE7D6;color:#444;position:relative;cursor:pointer;width:165px;font-size:12px;}
@@ -103,6 +104,14 @@
                             <input id="AddMenuUrl" type="url" class="form-control" name="AddMenuUrl"/>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">权限设置：</label>
+                        <div class="col-sm-8">
+                            <select id="addPriId" class="form-control" name="addPriId">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -117,6 +126,7 @@
 <script th:src="@{/hplus/js/bootstrap.min.js?v=3.3.6}"></script>
 <script th:src="@{/hplus/js/content.min.js?v=1.0.0}"></script>
 <script th:src="@{/hplus/js/plugins/nestable/jquery.nestable.js}"></script>
+<script th:src="@{/hplus/js/plugins/sweetalert/sweetalert.min.js}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var $path_base = /*[[@{/}]]*/ '';

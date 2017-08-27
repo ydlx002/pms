@@ -50,6 +50,16 @@ public class PrivilegeController {
         return privilegeService.getPrivilegeList(1,10,privilegeDTO);
     }
 
+    /**
+     * 获取指定系统中的权限列表
+     * @param sysId
+     * @return
+     */
+    @PostMapping(value = "/getPriDict")
+    public ResultVO getPriDict(@PathVariable("sysId") String sysId){
+        return privilegeService.getPrivilegeList(new PrivilegeDTO(sysId));
+    }
+
     /***
      * 添加权限信息
      * @param request

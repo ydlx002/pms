@@ -8,6 +8,9 @@ import java.util.Date;
  */
 public class BaseDTO implements Serializable{
 
+    /**系统ID*/
+    private String sysId;
+
     /**操作员*/
     private String operator;
 
@@ -52,10 +55,19 @@ public class BaseDTO implements Serializable{
         this.updateTime = updateTime;
     }
 
+    public String getSysId() {
+        return sysId;
+    }
+
+    public void setSysId(String sysId) {
+        this.sysId = sysId;
+    }
+
     @Override
     public String toString() {
         return "BaseDTO{" +
-                "operator='" + operator + '\'' +
+                "sysId='" + sysId + '\'' +
+                ", operator='" + operator + '\'' +
                 ", operatorId='" + operatorId + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

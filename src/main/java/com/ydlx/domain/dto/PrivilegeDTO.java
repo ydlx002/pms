@@ -8,9 +8,6 @@ public class PrivilegeDTO extends BaseDTO{
     /**权限ID*/
     private String priId;
 
-    /**系统ID*/
-    private String sysId;
-
     /**权限代码*/
     private String priCode;
 
@@ -20,20 +17,15 @@ public class PrivilegeDTO extends BaseDTO{
     /**权限名称*/
     private String priDesc;
 
+    /**权限类型 0查询 1新增 2更新 3删除*/
+    private Integer priType;
+
     public String getPriId() {
         return priId;
     }
 
     public void setPriId(String priId) {
         this.priId = priId;
-    }
-
-    public String getSysId() {
-        return sysId;
-    }
-
-    public void setSysId(String sysId) {
-        this.sysId = sysId;
     }
 
     public String getPriCode() {
@@ -60,14 +52,29 @@ public class PrivilegeDTO extends BaseDTO{
         this.priDesc = priDesc;
     }
 
+    public Integer getPriType() {
+        return priType;
+    }
+
+    public void setPriType(Integer priType) {
+        this.priType = priType;
+    }
+
     @Override
     public String toString() {
         return "PrivilegeDTO{" +
                 "priId='" + priId + '\'' +
-                ", sysId='" + sysId + '\'' +
                 ", priCode='" + priCode + '\'' +
                 ", priName='" + priName + '\'' +
                 ", priDesc='" + priDesc + '\'' +
-                "} " + super.toString();
+                ", priType=" + priType +
+                '}';
+    }
+
+    public PrivilegeDTO(){
+
+    }
+    public PrivilegeDTO(String sysId){
+        this.setSysId(sysId);
     }
 }

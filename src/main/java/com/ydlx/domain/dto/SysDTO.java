@@ -5,9 +5,6 @@ package com.ydlx.domain.dto;
  */
 public class SysDTO extends BaseDTO{
 
-    /**系统ID*/
-    private String sysId;
-
     /**系统编码*/
     private String sysCode;
 
@@ -19,15 +16,6 @@ public class SysDTO extends BaseDTO{
 
     /**1 正常  0禁用*/
     private Integer enable;
-
-    public String getSysId() {
-        return sysId;
-    }
-
-    public SysDTO setSysId(String sysId) {
-        this.sysId = sysId;
-        return this;
-    }
 
     public String getSysCode() {
         return sysCode;
@@ -64,11 +52,19 @@ public class SysDTO extends BaseDTO{
     @Override
     public String toString() {
         return "SysDTO{" +
-                "sysId='" + sysId + '\'' +
                 ", sysCode='" + sysCode + '\'' +
                 ", sysName='" + sysName + '\'' +
                 ", sysDesc='" + sysDesc + '\'' +
                 ", enable=" + enable +
                 "} " + super.toString();
     }
+
+    public SysDTO(){
+
+    }
+
+    public SysDTO(String sysId){
+        this.setSysId(sysId);
+    }
+
 }
