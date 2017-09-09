@@ -6,7 +6,7 @@ $(document).ready(function(){
     var sysId=$("#sysId").val();
     $.jgrid.defaults.styleUI="Bootstrap";
     $("#table_list_2").jqGrid({
-        url: $path_base+'pri/'+sysId+'/getListByPage',
+        url: $path_base+'role/'+sysId+'/getListByPage',
         mtype: 'POST',
         datatype : 'json',
         postData: {},
@@ -15,13 +15,13 @@ $(document).ready(function(){
         shrinkToFit:true,
         rowNum:20,
         rowList:[10,20,30],
-        colNames:["权限ID","权限编码","权限名称","权限描述","权限类型","创建时间","更新时间","操作员","操作"],
+        colNames:["角色ID","角色编码","角色名称","角色描述","角色类型","创建时间","更新时间","操作员","操作"],
         colModel:[
-            {name:"priId",sysId:"priId",editable:true,sorttype:"int",hidden:true},
-            {name:"priCode",index:"priCode",editable:false,align:"left"},
-            {name:"priName",index:"priName",editable:false,align:"left"},
-            {name:"priDesc",index:"priDesc",editable:false,align:"left"},
-            {name:"priType",index:"priType",editable:false,align:"left"},
+            {name:"roleId",sysId:"roleId",editable:true,sorttype:"int",hidden:true},
+            {name:"roleCode",index:"roleCode",editable:false,align:"left"},
+            {name:"roleName",index:"roleName",editable:false,align:"left"},
+            {name:"roleDesc",index:"roleDesc",editable:false,align:"left"},
+            {name:"roleType",index:"roleType",editable:false,align:"left"},
             {name:"createTime",index:"createTime",editable:false,align:"left",sorttype:"date",formatter : function(cellvalue, options, rowObject) {return $.hd_jqGrid.dateTimeFormatter(cellvalue); } },
             {name:"updateTime",index:"updateTime",editable:false,align:"left",sorttype:"date",formatter : function(cellvalue, options, rowObject) {return $.hd_jqGrid.dateTimeFormatter(cellvalue); }},
             {name:"operator",index:"operator",editable:false,align:"left"},
@@ -29,7 +29,7 @@ $(document).ready(function(){
         ],
         pager:"#pager_list_2",
         viewrecords:true,
-        caption:"权限列表",
+        caption:"角色列表",
         add:true,
         edit:true,
         addtext:"Add",
@@ -62,7 +62,7 @@ $(document).ready(function(){
     });
 
     //
-    // /**获取权限字典*/
+    // /**获取角色字典*/
     // $.ajax({
     //     type: 'POST',
     //     url: $path_base + 'sys/getSysDict',
@@ -78,33 +78,33 @@ $(document).ready(function(){
     // });
 
     /**
-     * 权限信息管理--查询
+     * 角色信息管理--查询
      */
     $("#btn_search").click(function(){
         var postData = new Object();
-        postData.priName = $("#priName").val();
-        postData.priCode = $("#priCode").val();
+        postData.roleName = $("#roleName").val();
+        postData.roleCode = $("#roleCode").val();
         tableReload(postData);
     });
 
     /**
-     * 添加权限信息--提交
+     * 添加角色信息--提交
      */
     $("#btn_add").click(function(){
         var postData = new Object(), sysId=$("#sysId").val();
-        postData.priCode = $("#addPriCode").val();
-        postData.priName = $("#addPriName").val();
-        postData.priDesc = $("#addPriDesc").val();
-        /**提交权限添加*/
+        postData.roleCode = $("#addRoleCode").val();
+        postData.roleName = $("#addRoleName").val();
+        postData.roleDesc = $("#addRoleDesc").val();
+        /**提交角色添加*/
         $.ajax({
             type: 'POST',
-            url: $path_base + 'pri/'+sysId+'/add',
+            url: $path_base + 'role/'+sysId+'/add',
             data: postData,
             type:'post',
             dataType:'json',
             success: function (data) {
                 if(data.resultCode=='0000'){
-                    swal({title:"太帅了",text:"权限信息添加成功",type:"success"},function () {
+                    swal({title:"太帅了",text:"角色信息添加成功",type:"success"},function () {
                         $("#add_modal").modal('hide');
                         tableReload();
                     });
@@ -113,29 +113,29 @@ $(document).ready(function(){
                 }
             },
             error: function () {
-                swal({title:"人品不好",text:"权限错误",type:"error"});
+                swal({title:"人品不好",text:"角色错误",type:"error"});
             }
         });
     });
 
     /**
-     * 更新权限信息--提交
+     * 更新角色信息--提交
      */
     $("#btn_edit").click(function(){
-        var postData = new Object(), editPriId=$("#editPriId").val();
-        postData.priCode = $("#editPriCode").val();
-        postData.priName = $("#editPriName").val();
-        postData.priDesc = $("#editPriDesc").val();
-        /**提交权限添加*/
+        var postData = new Object(), editRoleId=$("#editRoleId").val();
+        postData.roleCode = $("#editRoleCode").val();
+        postData.roleName = $("#editRoleName").val();
+        postData.roleDesc = $("#editRoleDesc").val();
+        /**提交角色添加*/
         $.ajax({
             type: 'POST',
-            url: $path_base + 'pri/'+sysId+'/'+editPriId+'/update',
+            url: $path_base + 'role/'+sysId+'/'+editRoleId+'/update',
             data: postData,
             type:'post',
             dataType:'json',
             success: function (data) {
                 if(data.resultCode=='0000'){
-                    swal({title:"太帅了",text:"更新权限信息成功",type:"success"},function () {
+                    swal({title:"太帅了",text:"更新角色信息成功",type:"success"},function () {
                         $("#edit_modal").modal('hide');
                         tableReload();
                     });
@@ -144,7 +144,7 @@ $(document).ready(function(){
                 }
             },
             error: function () {
-                swal({title:"人品不好",text:"权限错误",type:"error"});
+                swal({title:"人品不好",text:"角色错误",type:"error"});
             }
         });
     });
@@ -163,7 +163,7 @@ $(document).ready(function(){
     tableReload = function(postData){
         $("#table_list_2").clearGridData();
         $("#table_list_2").jqGrid('setGridParam', {
-            url: $path_base + 'pri/'+sysId+'/getListByPage',
+            url: $path_base + 'role/'+sysId+'/getListByPage',
             contentType: 'application/x-www-form-urlencoded; charset=utf-8',
             mtype: 'POST',
             datatype : 'json',
@@ -182,13 +182,13 @@ $(document).ready(function(){
     }
 
     /***
-     * 编辑权限信息--填充权限信息
+     * 编辑角色信息--填充角色信息
      */
     toEdit = function (id) {
-        $("#editPriId").val($("#table_list_2").jqGrid('getCell',id,0));
-        $("#editPriCode").val($("#table_list_2").jqGrid('getCell',id,1));
-        $("#editPriName").val($("#table_list_2").jqGrid('getCell',id,2));
-        $("#editPriDesc").val($("#table_list_2").jqGrid('getCell',id,3));
+        $("#editRoleId").val($("#table_list_2").jqGrid('getCell',id,0));
+        $("#editRoleCode").val($("#table_list_2").jqGrid('getCell',id,1));
+        $("#editRoleName").val($("#table_list_2").jqGrid('getCell',id,2));
+        $("#editRoleDesc").val($("#table_list_2").jqGrid('getCell',id,3));
         $("#edit_modal").modal('show');
     }
 
@@ -196,10 +196,10 @@ $(document).ready(function(){
      * 移除信息
      */
     toDel = function (id) {
-        var delPriId= $("#table_list_2").jqGrid('getCell',id,0);
-        var priName = $("#table_list_2").jqGrid('getCell',id,2);
+        var delRoleId= $("#table_list_2").jqGrid('getCell',id,0);
+        var roleName = $("#table_list_2").jqGrid('getCell',id,2);
         swal({
-                title:"您确定要移除权限：" + priName,
+                title:"您确定要移除角色：" + roleName,
                 text:"删除后将无法恢复，请谨慎操作！",
                 type:"warning",
                 showCancelButton:true,
@@ -213,12 +213,12 @@ $(document).ready(function(){
                 if(isConfirm){
                     $.ajax({
                         type: 'POST',
-                        url: $path_base + 'pri/'+sysId+'/'+delPriId+'/delete',
+                        url: $path_base + 'role/'+sysId+'/'+delRoleId+'/delete',
                         type:'post',
                         dataType:'json',
                         success: function (data) {
                             if(data.resultCode=='0000'){
-                                swal({title:"太帅了",text:"权限删除成功",type:"success"},function () {
+                                swal({title:"太帅了",text:"角色删除成功",type:"success"},function () {
                                     tableReload();
                                 });
                             }else{
@@ -226,7 +226,7 @@ $(document).ready(function(){
                             }
                         },
                         error: function () {
-                            swal({title:"人品不好",text:"权限错误",type:"error"});
+                            swal({title:"人品不好",text:"角色错误",type:"error"});
                         }
                     });
                 }else{
@@ -239,8 +239,8 @@ $(document).ready(function(){
      * 重置查询条件
      */
     $("#btn_reset").click(function () {
-        $("#priCode").val('');
-        $('#priName').val('');
+        $("#roleCode").val('');
+        $('#roleName').val('');
     });
 
     /**

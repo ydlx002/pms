@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>角色管理</title>
+    <meta name="keywords" content="角色管理"/>
+    <meta name="description" content="角色管理"/>
+
+    <link href="favicon.ico" rel="shortcut icon"/>
+    <link th:href="@{/hplus/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/plugins/jqgrid/ui.jqgridffe4.css?0820}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/animate.min.css}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/style.min862f.css?v=4.1.0}" rel="stylesheet"/>
+    <link th:href="@{/hplus/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+
+    <style>
+        #alertmod_table_list_2 {
+            top: 900px !important;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>角色管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h4 class="m-t">查询条件：</h4>
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">角色编码：</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" placeholder="角色编码" class="form-control" id="roleCode"/>
+                                    </div>
+                                    <label class="col-sm-1 control-label">角色名称：</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" placeholder="角色名称" class="form-control" id="roleName"/>
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        <button class="btn btn-sm btn-primary" type="button" id="btn_search"><strong>查询</strong></button>
+                                        <button class="btn btn-sm btn-primary" type="button" id="btn_reset"><strong>重置</strong></button>
+                                        <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#add_modal" id="to_add"><strong>添加</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="jqGrid_wrapper">
+                            <table id="table_list_2"></table>
+                            <div id="pager_list_2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--添加角色-->
+    <div class="modal inmodal fade" id="add_modal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">添加角色</h4>
+                    <small class="font-bold" th:text="${sysName}"></small>
+                </div>
+                <div class="modal-body">
+                    <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色编码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="addRoleCode"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="addRoleName"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色描述</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="addRoleDesc"/>
+                        </div>
+                    </div>
+                </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="btn_add">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--编辑角色信息-->
+    <div class="modal inmodal fade" id="edit_modal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">编辑角色</h4>
+                    <small class="font-bold" th:text="${sysName}"></small>
+                </div>
+                <div class="modal-body">
+                    <form method="get" class="form-horizontal">
+                    <input type="hidden" class="form-control" id="editRoleId"/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色编码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editRoleCode" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editRoleName"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">角色描述</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editRoleDesc"/>
+                        </div>
+                    </div>
+                </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="btn_edit">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <input id="sysId" type="hidden" th:value="${sysId}"/>
+    <script th:src="@{/hplus/js/jquery.min.js?v=2.1.4}"></script>
+    <script th:src="@{/hplus/js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820}"></script>
+    <script th:src="@{/hplus/js/bootstrap.min.js?v=3.3.6}"></script>
+    <script th:src="@{/hplus/js/plugins/peity/jquery.peity.min.js}"></script>
+    <script th:src="@{/hplus/js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820}"></script>
+    <script th:src="@{/hplus/js/content.min.js?v=1.0.0}"></script>
+    <script th:src="@{/hplus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var $path_base = /*[[@{/}]]*/ '';
+        /*]]>*/
+    </script>
+    <script th:src="@{/js/jquery.dateformat.js?v=1.0.0}"></script>
+    <script th:src="@{/js/system/role.js?v=1.0.0}"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydlx.dao.RoleMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ydlx.domain.dto.RoleDTO" >
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="sys_id" property="sysId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  
+  <sql id="Base_Column_List" >
+      a.role_id, a.role_name, a.role_code, a.role_desc, a.sys_id, b.full_name as operator , a.create_time, a.update_time
+  </sql>
+
+
+  <!--分页查询角色信息列表-->
+  <select id="getList" resultMap="BaseResultMap" parameterType="RoleDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_role a left join t_s_user b on a.operator_id = b.user_id
+    <where>
+      <if test="roleId != null and !&quot;&quot;.equals(roleId.trim())">
+        AND a.role_id = #{roleId}
+      </if>
+      <if test="sysId != null and !&quot;&quot;.equals(sysId.trim())">
+        AND a.sys_id in ('1',#{sysId})
+      </if>
+      <if test="roleName != null and !&quot;&quot;.equals(roleName.trim())">
+        AND a.role_name like CONCAT('%', #{roleName}, '%')
+      </if>
+      <if test="roleCode != null and !&quot;&quot;.equals(roleCode.trim())">
+        AND a.role_code  = #{roleCode}
+      </if>
+    </where>
+    order by a.create_time desc
+  </select>
+
+  <!--分页查询角色信息-->
+  <select id="getListByPage" resultMap="BaseResultMap" parameterType="CondictionDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from t_s_role a left join t_s_user b on a.operator_id = b.user_id
+    <where>
+      <if test="dto != null and dto.roleId != null and !&quot;&quot;.equals(dto.roleId.trim())">
+        AND a.role_id = #{dto.roleId}
+      </if>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id in ('1',#{dto.sysId})
+      </if>
+      <if test="dto != null and dto.roleName != null and !&quot;&quot;.equals(dto.roleName.trim())">
+        AND a.role_name like CONCAT('%', #{dto.roleName}, '%')
+      </if>
+      <if test="dto != null and dto.roleCode != null and !&quot;&quot;.equals(dto.roleCode.trim())">
+        AND a.role_code  = #{dto.roleCode}
+      </if>
+    </where>
+    order by a.create_time desc
+  </select>
+
+  <!--获取权限总数-->
+  <select id="getTotalCount"  resultType="INTEGER" parameterType="CondictionDTO" >
+    select COUNT(1)
+    from t_s_role a  LEFT JOIN t_s_user b ON a.operator_id=b.user_id
+    <where>
+      <if test="dto != null and dto.roleId != null and !&quot;&quot;.equals(dto.roleId.trim())">
+        AND a.role_id = #{dto.roleId}
+      </if>
+      <if test="dto != null and dto.sysId != null and !&quot;&quot;.equals(dto.sysId.trim())">
+        AND a.sys_id in ('1',#{dto.sysId})
+      </if>
+      <if test="dto != null and dto.roleName != null and !&quot;&quot;.equals(dto.roleName.trim())">
+        AND a.role_name like CONCAT('%', #{dto.roleName}, '%')
+      </if>
+      <if test="dto != null and dto.roleCode != null and !&quot;&quot;.equals(dto.roleCode.trim())">
+        AND a.role_code  = #{dto.roleCode}
+      </if>
+    </where>
+    order by a.create_time DESC
+  </select>
+
+    <!--查询角色信息-->
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+          <include refid="Base_Column_List" />
+        from t_s_role a left join t_s_user b on a.operator_id = b.user_id
+    <where>
+        a.role_id = #{roleId}
+    </where>
+        order by a.create_time desc
+  </select>
+  
+
+<!--写入新角色信息-->
+  <insert id="insert" parameterType="RoleDTO" >
+    insert into t_s_role
+       (role_id,role_code, role_name, role_desc, sys_id, create_time, update_time, operator_id)
+    VALUES
+    (
+      #{roleId, jdbcType=VARCHAR},
+      #{roleCode, jdbcType=VARCHAR},
+      #{roleName, jdbcType=VARCHAR},
+      #{roleDesc, jdbcType=VARCHAR},
+      #{sysId, jdbcType=VARCHAR},
+      #{createTime, jdbcType=TIMESTAMP},
+      #{updateTime, jdbcType=TIMESTAMP},
+      #{operatorId, jdbcType=VARCHAR}
+    )
+  </insert>
+
+    <!--更新角色信息-->
+  <update id="update" parameterType="com.ydlx.domain.dto.RoleDTO" >
+    update t_s_role
+    <set >
+      <if test="roleCode != null" >
+          role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+          role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime!= null" >
+          update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+          operator_id = #{operatorId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId, jdbcType=VARCHAR}
+  </update>
+
+    <!--删除角色-->
+    <delete id="delete" parameterType="String">
+        delete from t_s_role where role_id= #{roleId, jdbcType=VARCHAR}
+    </delete>
+</mapper>

@@ -20,6 +20,9 @@ public class PrivilegeVO extends BaseVO{
     /**权限名称*/
     private String priDesc;
 
+    /**权限类型 0菜单 1元素 2文件*/
+    private Integer priType;
+
     public String getPriId() {
         return priId;
     }
@@ -58,6 +61,14 @@ public class PrivilegeVO extends BaseVO{
 
     public void setPriDesc(String priDesc) {
         this.priDesc = priDesc;
+    }
+
+    public Integer getPriType() {
+        return priType;
+    }
+
+    public void setPriType(Integer priType) {
+        this.priType = priType;
     }
 
     @Override
