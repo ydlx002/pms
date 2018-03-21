@@ -8,5 +8,6 @@ public class PmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PmsApplication.class, args);
+
 	}
 }
