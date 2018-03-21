@@ -17,7 +17,7 @@ public class PrivilegeDTO extends BaseDTO{
     /**权限名称*/
     private String priDesc;
 
-    /**权限类型 0查询 1新增 2更新 3删除*/
+    /**权限类型 0菜单 1页面元素 2文件 */
     private Integer priType;
 
     public String getPriId() {

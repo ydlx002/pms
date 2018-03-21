@@ -1,11 +1,9 @@
 /**
  * Created by ydlx on 2017/6/4.
  */
-var addMenu;
+var toAdd;
 $(document).ready(function(){
     var sysId=$("#sysId").val();
-    var menuAddFlag=0;//新增菜单
-    var menuEditFlag=0;//编辑菜单
     $.ajax({
         type: 'POST',
         url: $path_base + 'menu/'+sysId+'/getMenuTree',

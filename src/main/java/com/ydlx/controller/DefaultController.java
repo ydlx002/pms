@@ -33,6 +33,14 @@ public class DefaultController {
     }
 
 
+    @GetMapping(value="/welcome")
+    public ModelAndView welcome(){
+        ModelAndView mav = new ModelAndView("/welcome");
+        mav.addObject("sysId","1");
+        return mav;
+    }
+
+
     @GetMapping(value="/user/index")
     public ModelAndView userIndex(){
         ModelAndView mav = new ModelAndView("/user");
@@ -60,6 +68,14 @@ public class DefaultController {
     @GetMapping(value="/menu/index")
     public ModelAndView menuIndex(){
         ModelAndView mav = new ModelAndView("/menu");
+        mav.addObject("sysId","1");
+        mav.addObject("sysName","权限管理系统(PMS)");
+        return mav;
+    }
+
+    @GetMapping(value="/role/index")
+    public ModelAndView roleIndex(){
+        ModelAndView mav = new ModelAndView("/role");
         mav.addObject("sysId","1");
         mav.addObject("sysName","权限管理系统(PMS)");
         return mav;
